@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR.js Car Movement</title>
+    <!-- Include A-Frame and AR.js -->
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+</head>
+<body>
+    <!-- AR Scene -->
+    <a-scene embedded arjs="sourceType: webcam;">
+
+        <!-- Add a marker that defines where to place the car -->
+        <a-marker id="userMarker">
+            <!-- Add the car model -->
+            <a-entity id="car" gltf-model="url(models/car.glb)" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
+        </a-marker>
+
+        <!-- Add a camera to view the scene -->
+        <a-entity camera></a-entity>
+    </a-scene>
+
+    <!-- Add input fields for user-defined position -->
+    <label for="xPosition">X Position:</label>
+    <input type="number" id="xPosition" value="0"><br><br>
+    <label for="yPosition">Y Position:</label>
+    <input type="number" id="yPosition" value="0"><br><br>
+    <label for="zPosition">Z Position:</label>
+    <input type="number" id="zPosition" value="0"><br><br>
+
+    <!-- Add a button to set the marker position -->
+    <button id="setMarkerPosition">Set Marker Position</button>
+
+    <!-- Add a button to trigger car movement -->
+    <button id="goButton">Go</button>
+
+    <!-- Include script for car movement and marker position setting -->
+    <script>
+        // Get the car entity
+        var car = document.getElementById('car');
+
+        // Get the marker entity
+        var marker = document.getElementById('userMarker');
+
+        // Get the button elements
+        var setMarkerPositionButton = document.getElementById('setMarkerPosition');
+        var goButton = document.getElementById('goButton');
+
+        // Add click event listener to set marker position button
+        setMarkerPositionButton.addEventListener('click', function() {
+            // Get user-defined positions
+            var x = parseFloat(document.getElementById('xPosition').value);
+            var y = parseFloat(document.getElementById('yPosition').value);
+            var z = parseFloat(document.getElementById('zPosition').value);
+            // Set marker position based on user input
+            marker.setAttribute('position', x + ' ' + y + ' ' + z);
+        });
+
+        // Add click event listener to the go button
+        goButton.addEventListener('click', function() {
+            // Move the car along the z-axis when the button is clicked
+            car.setAttribute('animation', 'property: position; to: 0 0 -5; dur: 2000; easing: linear');
+        });
+    </script>
+</body>
+</html>
