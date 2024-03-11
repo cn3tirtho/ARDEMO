@@ -3,52 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR.js Car Movement</title>
+    <title>AR.js Car Placement</title>
     <!-- Include A-Frame and AR.js -->
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 </head>
 <body>
-    <!-- AR Scene -->
-    <a-scene embedded arjs="sourceType: webcam;">
-
-        <!-- Add a marker that defines where to place the car -->
-        <a-marker id="userMarker">
+    <!-- Interface to show the model by default -->
+    <div id="interface">
+        <h1>View Car Model</h1>
+        <a-scene embedded arjs="sourceType: webcam;">
             <!-- Add the car model -->
-            <a-entity id="car" gltf-model="url(models/car.glb)" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
-        </a-marker>
+            <a-entity gltf-model="url(models/car.glb)" scale="0.05 0.05 0.05" position="0 0 -5"></a-entity>
+            <!-- Add a camera to view the scene -->
+            <a-entity camera></a-entity>
+        </a-scene>
+        <button id="arButton">Let's view in AR</button>
+    </div>
 
-        <!-- Add a camera to view the scene -->
-        <a-entity camera ar-raycaster="objects: .marker"></a-entity>
-    </a-scene>
+    <!-- AR Scene with a placeholder and place button -->
+    <div id="arScene" style="display: none;">
+        <a-scene embedded arjs="sourceType: webcam;">
+            <!-- Placeholder for positioning -->
+            <a-marker preset="hiro">
+                <a-entity position="0 0 0" geometry="primitive: cylinder; radius: 0.02; height: 0.01;" material="color: yellow;"></a-entity>
+                <a-text position="0 0.03 0" value="Bully Eye" color="black"></a-text>
+                <a-entity position="0 -0.1 0">
+                    <a-box id="placeButton" width="0.2" height="0.1" depth="0.05" position="0 0 0.1" color="green">
+                        <a-text value="Place" align="center" position="0 0 0.05"></a-text>
+                    </a-box>
+                </a-entity>
+            </a-marker>
+            <!-- Add a camera to view the scene -->
+            <a-entity camera></a-entity>
+        </a-scene>
+    </div>
 
-    <!-- Add a button to trigger car movement -->
-    <button id="goButton">Go</button>
-
-    <!-- Include script for car movement and marker position setting -->
     <script>
-        // Get the car entity
-        var car = document.getElementById('car');
-
-        // Get the marker entity
-        var marker = document.getElementById('userMarker');
-
-        // Get the go button
-        var goButton = document.getElementById('goButton');
-
-        // Add click event listener to the go button
-        goButton.addEventListener('click', function() {
-            // Move the car along the z-axis when the button is clicked
-            car.setAttribute('animation', 'property: position; to: 0 0 -5; dur: 2000; easing: linear');
+        document.getElementById('arButton').addEventListener('click', function() {
+            document.getElementById('interface').style.display = 'none';
+            document.getElementById('arScene').style.display = 'block';
         });
 
-        // Add a tap event listener to the AR scene
-        document.querySelector('a-scene').addEventListener('click', function (event) {
-            // Get the position where the user tapped
-            var tapPosition = event.detail.intersection.point;
-
-            // Set the marker position to the tapped position
-            marker.setAttribute('position', tapPosition);
+        document.getElementById('placeButton').addEventListener('click', function() {
+            var car = document.querySelector('a-entity[gltf-model]');
+            var bullyEye = document.querySelector('a-marker');
+            var bullyEyePosition = bullyEye.getAttribute('position');
+            car.setAttribute('position', bullyEyePosition);
         });
     </script>
 </body>
