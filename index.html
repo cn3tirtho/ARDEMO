@@ -19,19 +19,8 @@
         </a-marker>
 
         <!-- Add a camera to view the scene -->
-        <a-entity camera></a-entity>
+        <a-entity camera ar-raycaster="objects: .marker"></a-entity>
     </a-scene>
-
-    <!-- Add input fields for user-defined position -->
-    <label for="xPosition">X Position:</label>
-    <input type="number" id="xPosition" value="0"><br><br>
-    <label for="yPosition">Y Position:</label>
-    <input type="number" id="yPosition" value="0"><br><br>
-    <label for="zPosition">Z Position:</label>
-    <input type="number" id="zPosition" value="0"><br><br>
-
-    <!-- Add a button to set the marker position -->
-    <button id="setMarkerPosition">Set Marker Position</button>
 
     <!-- Add a button to trigger car movement -->
     <button id="goButton">Go</button>
@@ -44,24 +33,22 @@
         // Get the marker entity
         var marker = document.getElementById('userMarker');
 
-        // Get the button elements
-        var setMarkerPositionButton = document.getElementById('setMarkerPosition');
+        // Get the go button
         var goButton = document.getElementById('goButton');
-
-        // Add click event listener to set marker position button
-        setMarkerPositionButton.addEventListener('click', function() {
-            // Get user-defined positions
-            var x = parseFloat(document.getElementById('xPosition').value);
-            var y = parseFloat(document.getElementById('yPosition').value);
-            var z = parseFloat(document.getElementById('zPosition').value);
-            // Set marker position based on user input
-            marker.setAttribute('position', x + ' ' + y + ' ' + z);
-        });
 
         // Add click event listener to the go button
         goButton.addEventListener('click', function() {
             // Move the car along the z-axis when the button is clicked
             car.setAttribute('animation', 'property: position; to: 0 0 -5; dur: 2000; easing: linear');
+        });
+
+        // Add a tap event listener to the AR scene
+        document.querySelector('a-scene').addEventListener('click', function (event) {
+            // Get the position where the user tapped
+            var tapPosition = event.detail.intersection.point;
+
+            // Set the marker position to the tapped position
+            marker.setAttribute('position', tapPosition);
         });
     </script>
 </body>
