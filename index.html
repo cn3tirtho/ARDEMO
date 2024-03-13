@@ -18,9 +18,11 @@
             smoothTolerance=".01"
             smoothThreshold="5"
             smoothToleranceAngle="5"
+            marker-found="onMarkerFound"
+            marker-lost="onMarkerLost"
         >
             <!-- Display the joke text within a styled card when the marker is detected -->
-            <a-entity position="0 0 0">
+            <a-entity position="0 0 0" visible="false" id="jokeContainer">
                 <a-plane position="0 0.5 0" width="3" height="2" color="white" opacity="0.8" rotation="-90 0 0">
                     <a-text position="0 0 0.1" align="center" color="black" scale="2 2 2" value="Why was the coffee always nervous?\nIt was always getting mugged."></a-text>
                 </a-plane>
@@ -30,5 +32,17 @@
         <!-- Define the camera -->
         <a-entity camera></a-entity>
     </a-scene>
+
+    <script>
+        // Function to handle marker found event
+        function onMarkerFound() {
+            document.getElementById('jokeContainer').setAttribute('visible', 'true');
+        }
+
+        // Function to handle marker lost event
+        function onMarkerLost() {
+            document.getElementById('jokeContainer').setAttribute('visible', 'false');
+        }
+    </script>
 </body>
 </html>
