@@ -19,10 +19,12 @@
             smoothThreshold="5"
             smoothToleranceAngle="5"
         >
-            <!-- Display a joke when the marker is detected -->
-            <a-text position="0 0.5 0" align="center" color="white" scale="2 2 2">
-                Why was the coffee always nervous? It was always getting mugged.
-            </a-text>
+            <!-- Display the joke text within a styled card when the marker is detected -->
+            <a-entity position="0 0 0">
+                <a-plane position="0 0.5 0" width="3" height="2" color="white" opacity="0.8" rotation="-90 0 0">
+                    <a-text position="0 0 0.1" align="center" color="black" scale="2 2 2" value="Why was the coffee always nervous?\nIt was always getting mugged."></a-text>
+                </a-plane>
+            </a-entity>
         </a-nft>
 
         <!-- Define the camera -->
